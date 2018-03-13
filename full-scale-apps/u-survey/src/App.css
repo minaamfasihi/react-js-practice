@@ -26,3 +26,8 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.namy {
+  font-size: 30px;
+  padding: 20px;
+}
