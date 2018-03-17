@@ -5,7 +5,9 @@ import {
   BrowserRouter as Router, 
   Route,
   Link,
-  NavLink
+  NavLink,
+  Prompt,
+  Switch
 } from 'react-router-dom';
 
 const Home = () => {
@@ -20,6 +22,12 @@ const About = () => {
   )
 }
 
+const NotFound = () => {
+  return(
+    <h1>Not Found</h1>
+  )
+}
+
 const Content = () => {
   return(
     <div>
@@ -28,6 +36,28 @@ const Content = () => {
       <Route path="/content/:contentName" component={ContentDetails} />
     </div>
   )
+}
+
+class Form extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isChanged: false
+    }
+  }
+
+  render() {
+    return(
+      <div>
+        <Prompt when={this.state.isChanged} message="Are you sure you wanna leave?" />
+        <input onChange={() => {
+          this.setState({
+            isChanged: true
+          })
+        }} type="text" />
+      </div>
+    )
+  }
 }
 
 const ContentDetails = (props) => {
@@ -49,6 +79,7 @@ const Links = () => {
         <NavLink className="list-group-item" exact activeClassName="active" to="/">Home</NavLink>
         <NavLink className="list-group-item" activeClassName="active" to="/about">About</NavLink>
         <NavLink className="list-group-item" activeClassName="active" to="/content">Content</NavLink>
+        <NavLink className="list-group-item" activeClassName="active" to="/form">Form</NavLink>
     </div>
   )
 }
@@ -62,9 +93,14 @@ const App = () => {
         </section>
 
         <section className="col-sm-8">
-          <Route exact path="/" component={Home} />
-          <Route path="/about" component={About} />
-          <Route path="/content" component={Content} />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/about" component={About} />
+            <Route path="/content" component={Content} />
+            <Route path="/form" component={Form} />
+            {/*<Route component={NotFound} />*/}
+            <Route render={() => <h1>Not found inline</h1>} />
+          </Switch>
         </section>
       </div>
     </Router>
