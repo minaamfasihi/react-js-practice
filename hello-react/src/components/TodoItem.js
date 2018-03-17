@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class TodoItem extends React.Component {
     constructor(props) {
@@ -69,6 +70,14 @@ class TodoItem extends React.Component {
             </section>
         )
     }
-} 
+}
+
+TodoItem.propTypes = {
+    clickHandler: PropTypes.func,
+    index: PropTypes.number,
+    details: PropTypes.object,
+    deleteTask: PropTypes.func,
+    editTask: PropTypes.func
+}
 
 export default TodoItem;

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import TodoItem from './components/TodoItem';
 import TodoForm from './components/TodoForm';
+import $ from 'jquery';
 
 class TodoList extends React.Component {
     constructor() {
@@ -88,8 +89,10 @@ class TodoList extends React.Component {
                     {
                         this.state.tasks.map((task, index) => {
                             return <TodoItem 
-                                key={index} clickHandler={this.changeStatus}
-                                index={index} details={task}
+                                key={index} 
+                                clickHandler={this.changeStatus}
+                                index={index} 
+                                details={task}
                                 deleteTask={this.deleteTask}
                                 editTask={this.editTask}
                             />
@@ -101,4 +104,136 @@ class TodoList extends React.Component {
     }
 }
 
-ReactDOM.render(<TodoList />, document.getElementById("root"));
+
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            users: []
+        }
+    }
+
+    componentDidMount() {
+        $.ajax({
+            url: 'https://jsonplaceholder.typicode.com/users',
+            success: (data) => {
+                this.setState({
+                    users: data
+                })
+            }
+        })
+    }
+
+    render() {
+        const { users } = this.state;
+        return(
+            <ul>
+                {
+                    users.map((user) => {
+                        return <li key={user.id}>{user.name}</li>
+                    })
+                }
+            </ul>
+        )
+    }
+}
+
+class App2 extends React.Component {
+    render() {
+        return(
+            <section>
+                {React.Children.only(this.props.children)}
+                {this.props.children}
+            </section>
+        )
+    }
+}
+
+class Fetch extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            content: []
+        }
+    }
+
+    componentDidMount() {
+        $.ajax({
+            url: this.props.url,
+            success: (data) => {
+                this.setState({
+                    content: data
+                })
+            },
+            error: (err) => {
+                console.log("err", err);
+            }
+        });
+    }
+
+    render() {
+        return(
+            <section>
+                {this.props.children(this.state.content)}
+            </section>
+        )
+    }
+}
+
+class App3 extends React.Component {
+    render() {
+        return(
+            <section>
+                <Fetch url="https://jsonplaceholder.typicode.com/posts">
+                    {(data) => {
+                        return data.map((value, key) => {
+                            return <li key={key}>{value.title}</li>
+                        })
+                    }}
+                </Fetch>
+
+                <Fetch url="https://jsonplaceholder.typicode.com/users">
+                    {(data) => {
+                        return data.map((value, key) => {
+                            return <li key={key}>{value.name}</li>
+                        })
+                    }}
+                </Fetch>
+            </section>
+        )
+    }
+}
+
+class App4 extends Component {
+    constructor() {
+        super();
+
+        this.state = {
+            name: ""
+        };
+    }
+
+    onInputChange = (event) => {
+        this.setState({
+            name: event.target.value
+        });
+    }
+
+    handleSubmit = () => {
+        console.log("Submit");
+    }
+
+    render() {
+        return(
+            <div>
+                {/* <input type="text" ref={(input) => this._name = input} /> */}
+                <input type="text" value={this.state.name} onChange={this.onInputChange} />
+                <button disabled={this.state.name.length > 0 ? false : true} onClick={this.handleSubmit}>Submit</button>
+            </div>
+        )
+    }
+}
+
+
+ReactDOM.render(<App4/>, document.getElementById("root"));
