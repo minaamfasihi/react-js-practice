@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import bindfunc from './util.js';
 
 class Counter extends Component {
     constructor() {
@@ -9,7 +10,8 @@ class Counter extends Component {
             count: 0
         }
 
-        this.incrementCounter = this.incrementCounter.bind(this);
+        // this.incrementCounter = this.incrementCounter.bind(this);
+        bindfunc.call(this, ["incrementCounter"]);
     }
 
     incrementCounter() {
