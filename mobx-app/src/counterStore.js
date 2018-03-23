@@ -1,17 +1,23 @@
 //states
-import { observable, action } from 'mobx';
+import { extendObservable, action } from 'mobx';
 
-let appState = observable({
-    count: 0,
-    get getCount() {
-        return this.count;
-    },
-    decCounter:action.bound(function() {
-        this.count -= 1;
-    }),
-    incCounter:action.bound(function() {
-        this.count += 1;
-    })
-})
+class AppState {
+    constructor() {
+        extendObservable(this, {
+            count: 0,
+            get getCount() {
+                return this.count;
+            },
 
-export default appState;
+            decCounter:action(() => {
+                this.count -= 1;
+            }),
+
+            incCounter:action(() => {
+                this.count += 1;
+            })
+        });
+    }
+}
+
+export default new AppState();
