@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { observer, inject } from "mobx-react";
-import { Switch, Route, withRouter } from "react-router-dom";
+import { Switch, Route, withRouter, NavLink } from "react-router-dom";
 
-import MobxgramList from "./components/MobxgramList.js";
+import MobxgramList from "./components/MobxgramList";
+import PhotoDetails from "./components/PhotoDetail";
+import AddPhoto from "./components/AddPhoto";
 
 class App extends Component {
   componentDidMount() {
@@ -16,11 +18,18 @@ class App extends Component {
 
     return (
       <div>
+        <h2 className="text-center">
+          <NavLink to="/">
+            Mobxgram
+          </NavLink>
+        </h2>
+        
       {
         mobxgramStore.mobxgramList.length ?
         <Switch>
+          <Route path="/add_photo" component={AddPhoto} />
           <Route exact path="/" component={MobxgramList} />
-          <Route path="/:imageName" render={() => <h2>imageName</h2>} />
+          <Route path="/:imageName" component={PhotoDetails} />
         </Switch> : null
       }
       </div>

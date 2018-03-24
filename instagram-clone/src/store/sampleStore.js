@@ -9,7 +9,7 @@ let store = [
     {
         name: "City 2",
         comments: [{ author: "David", text: "Best City" }],
-        imageLinks: "http://lorempixel.com/300/300/city/4",
+        imageLinks: "http://lorempixel.com/300/300/city/6",
         likes: 30,
         id: 3
     }
